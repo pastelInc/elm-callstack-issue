@@ -4,6 +4,7 @@ import Html exposing (Html, div, h1, li, text, ul)
 import Html.Events exposing (onClick)
 import Navigation exposing (Location)
 import Route exposing (Route)
+import Translations.Record as Translations
 
 
 type Msg
