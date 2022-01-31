@@ -1,7 +1,7 @@
 module Translations.Record exposing (..)
 
 
-type alias Translation =
+type alias Translations =
     { phrase1 : String
     , phrase2 : String
     , phrase3 : String
@@ -411,8 +411,8 @@ type alias Translation =
     }
 
 
-translate : Translation
-translate =
+translations : Translations
+translations =
     { phrase1 = "phrase"
     , phrase2 = "phrase"
     , phrase3 = "phrase"

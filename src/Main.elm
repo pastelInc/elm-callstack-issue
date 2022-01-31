@@ -2,20 +2,25 @@ module Main exposing (main)
 
 import Html exposing (Html, div, h1, li, text, ul)
 import Html.Events exposing (onClick)
+import Http exposing (Error)
+import I18Next exposing (Translations)
 import Navigation exposing (Location)
 import Route exposing (Route)
-import Translations.Record as Translations
+
+
+--import Translations.Record as Translations
 
 
 type Msg
     = Navigation Route
     | UrlChange (Maybe Route)
+    | UpdateTranslations (Result Error Translations)
 
 
 type Model
     = Home
     | RecordTranslations
-    | DictTranslations
+    | DictTranslations Translations
     | Blank
 
 
@@ -35,7 +40,7 @@ setRoute route model =
             RecordTranslations ! []
 
         Just Route.DictTranslations ->
-            DictTranslations ! []
+            DictTranslations I18Next.initialTranslations ! [ I18Next.fetchTranslations UpdateTranslations "/locale/i18n/translation.ja.json" ]
 
         Nothing ->
             Blank ! []
@@ -49,6 +54,12 @@ update msg model =
 
         Navigation route ->
             model ! [ Route.newUrl route ]
+
+        UpdateTranslations (Ok translations) ->
+            DictTranslations translations ! []
+
+        UpdateTranslations (Err _) ->
+            DictTranslations I18Next.initialTranslations ! []
 
 
 view : Model -> Html Msg
@@ -69,8 +80,8 @@ view model =
         RecordTranslations ->
             div [] [ h1 [] [ text "Record" ] ]
 
-        DictTranslations ->
-            div [] [ h1 [] [ text "Dict" ] ]
+        DictTranslations translations ->
+            div [] [ h1 [] [ text "Dict" ], div [] [ text <| toString translations ] ]
 
 
 main : Program Never Model Msg
